@@ -8,15 +8,21 @@ module.exports = class Message extends Event {
   }
 
   run (message) {
-    if(message.channel.type == "dm") {
-        message.author.send("I'm sorry I don't have any cool things I can do yet.");
-    }
-    if(message.channel.id == "613497065921576970")
-    {
-        message.react("👎")
-        message.react("👍")
-    }
     if (!message.author.bot) {
+      if(message.channel.type == "dm") {
+          try {
+            message.reply("I'm sorry I don't have any cool things I can do yet.")
+          } catch (e) {
+            this.client.log('error', e)
+          } finally {
+            this.client.log('info', `${message.author.tag} tried to DM me so I told them I can't do much right now.`)
+          }
+      }
+      if(message.channel.id == "613497065921576970")
+      {
+          message.react("👎")
+          message.react("👍")
+      }
       if (message.content.startsWith(process.env.PREFIX)) {
         const cmd = message.content.split(' ')[0].substring(process.env.PREFIX.length)
         const args = message.content.substring(cmd.length + process.env.PREFIX.length + 1)
